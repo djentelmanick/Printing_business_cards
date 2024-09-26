@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Печать визиток</title>
+</head>
+<body>
+    <h1>Добрый день, уважаемый пользователь, вы зашли на сайт для печати визиток</h1>
+    <h2>Загрузите данные и нажмите "Сгенерировать файл для печати"</h2>
+    <form method="post" enctype="multipart/form-data">
+        <label for="paper_size">Размер бумаги:</label>
+        <select id="paper_size" name="paper_size" required>
+            <option value="A2">A2</option>
+            <option value="A3">A3</option>
+            <option value="A4" selected>A4</option>
+            <option value="A5">A5</option>
+            <option value="A6">A6</option>
+        </select>
+        <label for="cust_size_w">Пользовательский размер в мм (ширина*длина):</label>
+        <input type="text" id="cust_size_w" name="cust_size_w" style="width: 50px;">
+        <label for="cust_size_h">*</label>
+        <input type="text" id="cust_size_h" name="cust_size_h" style="width: 50px;">
+        <p><em>*Вводите пользовательский размер, только если хотите использовать его вместо предложенных</em></p>
+
+        <label for="card_width">Готовый размер визитки в мм (ширина*длина):</label>
+        <input type="text" id="card_width" name="card_width" required style="width: 50px;" value=90>
+        <label for="card_height">*</label>
+        <input type="text" id="card_height" name="card_height" required style="width: 50px;" value=50>
+        <p><em>*Изображение сжиматеся под выбранный размер, также оно будет увелечено на 4 мм по вертикали и горизонтали для вылета под обрез.</em></p>
+
+        <label for="front_files">Лицевая сторона:</label>
+        <input type="file" accept=".jpeg, .jpg, .png, .webp, .tiff" id="front_files" name="front_files" multiple required><br><br>
+
+        <label for="back_files">Оборотная сторона:</label>
+        <input type="file" accept=".jpeg, .jpg, .png, .webp, .tiff" id="back_files" name="back_files" multiple required>
+        <p><em>*Выбирайте оборотные стороны в соответствии с порядком выбора лицевых сторон. Доступные форматы JPEG, PNG, WEBP, TIFF</em></p><br>
+
+        <p><b>Перед нажатием на кнопку убедитесь в правильности выбранных параметрах и
+            в соответствие количеству выбранных файлов лицевой и оборотной стороны!</b></p>
+        <input type="submit" value="Сгенерировать файл для печати">
+    </form>
+</body>
+</html>
