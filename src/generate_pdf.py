@@ -99,6 +99,10 @@ def draw_business_cards(width, height, width_bc, height_bc, front_files, back_fi
         for front_file, back_file in zip(front_files, back_files):
             with Image(file=front_file.stream) as fbc, \
                  Image(width=width, height=height, background=Color("white")) as page:
+                # Сохраняем размеры лицевой стороны для проверки корректности размеров обратной стороны
+                front_width = fbc.width
+                front_height = fbc.height
+
                 # Устанавливаем разрешение изображений
                 fbc.resolution = (DPI, DPI)
                 page.resolution = (DPI, DPI)
@@ -118,6 +122,9 @@ def draw_business_cards(width, height, width_bc, height_bc, front_files, back_fi
 
             with Image(file=back_file.stream) as bbc, \
                     Image(width=width, height=height, background=Color("white")) as page2:
+                if bbc.width != front_width or bbc.height != front_height:
+                    raise ValueError('Размеры лицевых и оборотных сторон визиток должны быть попарно равны')
+
                 # Устанавливаем разрешение изображений
                 bbc.resolution = (DPI, DPI)
                 page2.resolution = (DPI, DPI)

@@ -26,14 +26,16 @@
         <input type="text" id="card_width" name="card_width" required style="width: 50px;" value=90>
         <label for="card_height">*</label>
         <input type="text" id="card_height" name="card_height" required style="width: 50px;" value=50>
-        <p><em>*Изображение сжиматеся под выбранный размер, также оно будет увелечено на 4 мм по вертикали и горизонтали для вылета под обрез.</em></p>
+        <p><em>*Изображение сжиматеся под выбранный размер, также оно будет увелечено на 4 мм по вертикали и горизонтали для вылета под обрез.
+            (Т.е. для получения готовых визиток в стандартном размере 90*50 ваши визитки должны иметь изначальный размер 94*54)</em></p>
 
-        <label for="front_files">Лицевая сторона:</label>
-        <input type="file" accept=".jpeg, .jpg, .png, .webp, .tiff" id="front_files" name="front_files" multiple required><br><br>
+        <label for="front_files">Папка с лицевыми сторонами:</label>
+        <input type="file" id="front_files" name="front_files" webkitdirectory multiple required><br><br>
 
-        <label for="back_files">Оборотная сторона:</label>
-        <input type="file" accept=".jpeg, .jpg, .png, .webp, .tiff" id="back_files" name="back_files" multiple required>
-        <p><em>*Выбирайте оборотные стороны в соответствии с порядком выбора лицевых сторон. Доступные форматы JPEG, PNG, WEBP, TIFF</em></p><br>
+        <label for="back_files">Папка с оборотными сторонами:</label>
+        <input type="file" id="back_files" name="back_files" webkitdirectory multiple required>
+        <p><em>*Располагайте в папке оборотные стороны в соответствии с порядком расположения лицевых сторон. Убедитесь, что размеры визиток попарно совпадают.
+            Доступные форматы JPEG, PNG, WEBP, TIFF</em></p><br>
 
         <p><b>Перед нажатием на кнопку убедитесь в правильности выбранных параметрах и
             в соответствие количеству выбранных файлов лицевой и оборотной стороны!</b></p>
