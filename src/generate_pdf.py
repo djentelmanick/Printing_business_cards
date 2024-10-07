@@ -46,27 +46,27 @@ def draw_mark(count_hor, count_ver, right_width_bc, right_height_bc, page) -> No
 
         for ind_mark in range(count_ver + 1):
             if ind_mark == 0:
-                draw.line((INDENT - MARK_L, INDENT + STOCK + ind_mark*right_height_bc),
-                          (INDENT, INDENT + STOCK + ind_mark*right_height_bc))
+                draw.line((INDENT - MARK_L, INDENT + STOCK + ind_mark * right_height_bc),
+                          (INDENT, INDENT + STOCK + ind_mark * right_height_bc))
 
-                draw.line((INDENT + MARK_L + count_hor*right_width_bc, INDENT + STOCK + ind_mark * right_height_bc),
-                          (INDENT + count_hor*right_width_bc, INDENT + STOCK + ind_mark * right_height_bc))
+                draw.line((INDENT + MARK_L + count_hor * right_width_bc, INDENT + STOCK + ind_mark * right_height_bc),
+                          (INDENT + count_hor * right_width_bc, INDENT + STOCK + ind_mark * right_height_bc))
             elif ind_mark == count_ver:
                 draw.line((INDENT - MARK_L, INDENT - STOCK + ind_mark * right_height_bc),
                           (INDENT, INDENT - STOCK + ind_mark * right_height_bc))
 
-                draw.line((INDENT + MARK_L + count_hor*right_width_bc, INDENT - STOCK + ind_mark * right_height_bc),
-                          (INDENT + count_hor*right_width_bc, INDENT - STOCK + ind_mark * right_height_bc))
+                draw.line((INDENT + MARK_L + count_hor * right_width_bc, INDENT - STOCK + ind_mark * right_height_bc),
+                          (INDENT + count_hor * right_width_bc, INDENT - STOCK + ind_mark * right_height_bc))
             else:
                 draw.line((INDENT - MARK_L, INDENT + STOCK + ind_mark * right_height_bc),
                           (INDENT, INDENT + STOCK + ind_mark * right_height_bc))
                 draw.line((INDENT - MARK_L, INDENT - STOCK + ind_mark * right_height_bc),
                           (INDENT, INDENT - STOCK + ind_mark * right_height_bc))
 
-                draw.line((INDENT + MARK_L + count_hor*right_width_bc, INDENT + STOCK + ind_mark * right_height_bc),
-                          (INDENT + count_hor*right_width_bc, INDENT + STOCK + ind_mark * right_height_bc))
-                draw.line((INDENT + MARK_L + count_hor*right_width_bc, INDENT - STOCK + ind_mark * right_height_bc),
-                          (INDENT + count_hor*right_width_bc, INDENT - STOCK + ind_mark * right_height_bc))
+                draw.line((INDENT + MARK_L + count_hor * right_width_bc, INDENT + STOCK + ind_mark * right_height_bc),
+                          (INDENT + count_hor * right_width_bc, INDENT + STOCK + ind_mark * right_height_bc))
+                draw.line((INDENT + MARK_L + count_hor * right_width_bc, INDENT - STOCK + ind_mark * right_height_bc),
+                          (INDENT + count_hor * right_width_bc, INDENT - STOCK + ind_mark * right_height_bc))
 
         draw(page)
 
@@ -77,18 +77,18 @@ def draw_business_cards(width, height, width_bc, height_bc, front_files, back_fi
     # Переводим размеры листа и визиток в пиксели
     width = mm_to_px(width)
     height = mm_to_px(height)
-    width_bc = mm_to_px(width_bc + INIT_STOCK*2)
-    height_bc = mm_to_px(height_bc + INIT_STOCK*2)
+    width_bc = mm_to_px(width_bc + INIT_STOCK * 2)
+    height_bc = mm_to_px(height_bc + INIT_STOCK * 2)
 
     # Проверка на оптимальное расположение при повороте визитки
     need_turn = 1
     right_width_bc = height_bc
     right_height_bc = width_bc
-    count_ver, count_hor = (height-INDENT*2)//width_bc, (width-INDENT*2)//height_bc
-    if (height-INDENT*2)//height_bc * ((width-INDENT*2)//width_bc) > count_ver * count_hor:
+    count_ver, count_hor = (height - INDENT * 2) // width_bc, (width - INDENT * 2) // height_bc
+    if (height - INDENT * 2) // height_bc * ((width - INDENT * 2) // width_bc) > count_ver * count_hor:
         need_turn = 0
         right_width_bc, right_height_bc = right_height_bc, right_width_bc
-        count_ver, count_hor = (height-INDENT*2)//height_bc, ((width-INDENT*2)//width_bc)
+        count_ver, count_hor = (height - INDENT * 2) // height_bc, ((width - INDENT * 2) // width_bc)
 
     # Создаем объект BytesIO
     output_stream = BytesIO()
@@ -97,12 +97,12 @@ def draw_business_cards(width, height, width_bc, height_bc, front_files, back_fi
     with Image() as output_file:
         # Вставляем изображения на лист
         for front_file, back_file in zip(front_files, back_files):
-            with Image(file=front_file.stream) as fbc, \
-                 Image(width=width, height=height, background=Color("white")) as page:
-                # Сохраняем размеры лицевой стороны для проверки корректности размеров обратной стороны
-                front_width = fbc.width
-                front_height = fbc.height
+            # Возвращаемся к началу потока
+            front_file.stream.seek(0)
+            back_file.stream.seek(0)
 
+            with Image(file=front_file.stream) as fbc, \
+                    Image(width=width, height=height, background=Color("white")) as page:
                 # Устанавливаем разрешение изображений
                 fbc.resolution = (DPI, DPI)
                 page.resolution = (DPI, DPI)
@@ -114,7 +114,7 @@ def draw_business_cards(width, height, width_bc, height_bc, front_files, back_fi
 
                 for y in range(count_ver):
                     for x in range(count_hor):
-                        page.composite(fbc, left=INDENT+x*right_width_bc, top=INDENT+y*right_height_bc)
+                        page.composite(fbc, left=INDENT + x * right_width_bc, top=INDENT + y * right_height_bc)
                 # Делаем маркеры на лицевой стороне
                 draw_mark(count_hor, count_ver, right_width_bc, right_height_bc, page)
                 # Сохраняем лист с лицевой стороной
@@ -122,9 +122,6 @@ def draw_business_cards(width, height, width_bc, height_bc, front_files, back_fi
 
             with Image(file=back_file.stream) as bbc, \
                     Image(width=width, height=height, background=Color("white")) as page2:
-                if bbc.width != front_width or bbc.height != front_height:
-                    raise ValueError('Размеры лицевых и оборотных сторон визиток должны быть попарно равны')
-
                 # Устанавливаем разрешение изображений
                 bbc.resolution = (DPI, DPI)
                 page2.resolution = (DPI, DPI)
